@@ -1,0 +1,330 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f4f4;
+    color: #171717;
+}
+
+
+/* CONTENEDOR PRINCIPAL */
+
+.contenedor {
+    width: 95%;
+    max-width: 1400px;
+    min-height: 700px;
+
+    margin: 30px auto;
+
+    background-color: white;
+
+    border: 2px solid #222;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+
+/* =================================
+   TÍTULOS
+================================= */
+
+h1 {
+    font-size: 25px;
+
+    margin-bottom: 25px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 2px solid #222;
+}
+
+h2 {
+    font-size: 18px;
+
+    margin-bottom: 25px;
+}
+
+
+/* =================================
+   SECCIÓN CONVERSOR
+================================= */
+
+.conversor {
+    padding: 30px;
+
+    border-right: 2px solid #222;
+}
+
+
+/* CAJAS */
+
+.caja-conversor {
+    border: 1px solid #999;
+
+    border-radius: 10px;
+
+    padding: 25px;
+
+    margin-bottom: 25px;
+}
+
+
+/* FILAS */
+
+.fila {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.fila:last-child {
+    margin-bottom: 0;
+}
+
+
+/* CAMPOS */
+
+.campo {
+    width: 42%;
+}
+
+.campo label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: bold;
+
+    font-size: 15px;
+}
+
+.campo input {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #555;
+
+    border-radius: 6px;
+
+    font-size: 16px;
+
+    background-color: white;
+}
+
+.campo input:focus {
+    outline: 2px solid #222;
+}
+
+.campo input[readonly] {
+    background-color: #eeeeee;
+
+    color: #222;
+}
+
+
+/* FLECHA */
+
+.flecha {
+    font-size: 30px;
+
+    color: #111;
+}
+
+
+/* TASAS */
+
+.tasas {
+    border-top: 1px solid #aaa;
+
+    padding-top: 15px;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+}
+
+.tasas small {
+    color: #555;
+}
+
+
+/* =================================
+   SECCIÓN PIZARRÓN
+================================= */
+
+.pizarron {
+    padding: 30px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* TABLERO */
+
+.tablero {
+    border: 2px solid #333;
+
+    border-radius: 12px;
+
+    min-height: 470px;
+
+    padding: 25px;
+
+    background-color: #fafafa;
+
+    flex: 1;
+}
+
+
+/* TÍTULO DEL TABLERO */
+
+.tablero h2 {
+    display: inline-block;
+
+    border-bottom: 2px solid #222;
+
+    padding-bottom: 8px;
+}
+
+
+/* NOTAS */
+
+.nota {
+    position: relative;
+
+    background-color: white;
+
+    border: 1px solid #aaa;
+
+    border-radius: 7px;
+
+    padding: 15px 45px 15px 15px;
+
+    margin-bottom: 15px;
+
+    min-height: 50px;
+
+    font-size: 16px;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+/* BOTÓN ELIMINAR */
+
+.nota button {
+    position: absolute;
+
+    right: 10px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    color: #111;
+}
+
+.nota button:hover {
+    font-weight: bold;
+
+    transform: translateY(-50%) scale(1.2);
+}
+
+
+/* =================================
+   BOTÓN AGREGAR NOTA
+================================= */
+
+.boton-agregar {
+    margin: 25px auto 0;
+
+    padding: 14px 25px;
+
+    border: 2px solid #222;
+
+    background-color: white;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.boton-agregar:hover {
+    background-color: #eeeeee;
+
+    transform: translateY(-2px);
+}
+
+.boton-agregar span {
+    font-size: 22px;
+
+    vertical-align: middle;
+}
+
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 850px) {
+
+    .contenedor {
+        grid-template-columns: 1fr;
+    }
+
+    .conversor {
+        border-right: none;
+
+        border-bottom: 2px solid #222;
+    }
+
+    .fila {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .campo {
+        width: 100%;
+    }
+
+    .flecha {
+        text-align: center;
+
+        transform: rotate(90deg);
+    }
+
+    .tablero {
+        min-height: 400px;
+    }
+}

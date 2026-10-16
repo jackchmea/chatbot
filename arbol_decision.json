@@ -1,0 +1,469 @@
+{
+  "nodos": [
+    {
+      "id": "inicio",
+      "titulo": "Bienvenida",
+      "texto": "¡Bienvenido a Ben Sulayem! 🏁 Soy tu asistente informativo de Fórmula 1. Acá podés conocer la historia, las próximas carreras, los horarios, los resultados, los fichajes y mucho más. Elegí una opción para empezar.",
+      "opciones": [
+        {
+          "texto": "Entrar al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "menu_principal",
+      "titulo": "Menú principal",
+      "texto": "¡Vamos al paddock! 🏎️ Elegí qué querés consultar. Voy a recordar tu último tema principal mientras dure esta sesión: {eleccion}.",
+      "opciones": [
+        {
+          "texto": "Historia de la F1",
+          "siguiente": "historia",
+          "recuerda": "Historia de la F1"
+        },
+        {
+          "texto": "Horarios de carreras",
+          "siguiente": "horarios_carreras",
+          "recuerda": "Horarios de carreras"
+        },
+        {
+          "texto": "Próxima carrera",
+          "siguiente": "proxima_carrera",
+          "recuerda": "Próxima carrera"
+        },
+        {
+          "texto": "Resultados y clasificación",
+          "siguiente": "resultados_clasificacion",
+          "recuerda": "Resultados y clasificación"
+        },
+        {
+          "texto": "Traspasos de pilotos",
+          "siguiente": "traspasos_pilotos",
+          "recuerda": "Traspasos de pilotos"
+        },
+        {
+          "texto": "Datos curiosos",
+          "siguiente": "datos_curiosos",
+          "recuerda": "Datos curiosos"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "historia",
+      "titulo": "Historia de la F1",
+      "texto": "🏁 HISTORIA DE LA FÓRMULA 1\n\nEl Campeonato Mundial de Fórmula 1 comenzó en 1950. La primera carrera puntuable de ese campeonato se disputó en Silverstone, Reino Unido, el 13 de mayo de 1950.\n\nEl italiano Giuseppe Farina fue el primer campeón mundial de pilotos. Después llegaron grandes figuras como Juan Manuel Fangio, Alain Prost, Ayrton Senna, Michael Schumacher y Lewis Hamilton.\n\nCon el paso del tiempo, la categoría evolucionó en aerodinámica, motores, seguridad, estrategia y tecnología. Hoy combina el talento de los pilotos con el trabajo de cientos de personas en cada equipo.",
+      "fuentes": [
+        {
+          "texto": "Web oficial de Fórmula 1",
+          "url": "https://www.formula1.com/"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Conocer datos curiosos",
+          "siguiente": "datos_curiosos"
+        },
+        {
+          "texto": "Ver resultados y clasificación",
+          "siguiente": "resultados_clasificacion"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "proxima_carrera",
+      "titulo": "Próxima carrera",
+      "texto": "🏎️ PRÓXIMO GRAN PREMIO\n\nLa próxima carrera programada es el Gran Premio de Estados Unidos, en Austin, Texas.\n\n📅 Fechas: del 23 al 25 de octubre de 2026.\n📍 Circuito: Circuit of The Americas.\n🏁 Carrera principal: domingo 25 de octubre.\n\nLa siguiente parada del calendario será México, del 30 de octubre al 1 de noviembre.\n\nEstos datos corresponden al calendario publicado para 2026. Como esta página no consulta datos en vivo, verificá cualquier cambio en el sitio oficial.",
+      "fuentes": [
+        {
+          "texto": "Calendario oficial 2026",
+          "url": "https://www.formula1.com/en/racing/2026"
+        },
+        {
+          "texto": "Gran Premio de Estados Unidos",
+          "url": "https://www.formula1.com/en/racing/2026/united-states"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Ver horarios del GP de Estados Unidos",
+          "siguiente": "horarios_carreras"
+        },
+        {
+          "texto": "Ver el calendario restante",
+          "siguiente": "calendario"
+        },
+        {
+          "texto": "Ver resultados recientes",
+          "siguiente": "ultimo_resultado"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "horarios_carreras",
+      "titulo": "Horarios de carreras",
+      "texto": "🕒 HORARIOS DEL GP DE ESTADOS UNIDOS\n\nEstos son los horarios previstos en hora de Argentina (UTC-3):\n\nVIERNES 23 DE OCTUBRE\n• Práctica libre 1: 14:30.\n• Práctica libre 2: 18:00.\n\nSÁBADO 24 DE OCTUBRE\n• Práctica libre 3: 14:30.\n• Clasificación: 18:00.\n\nDOMINGO 25 DE OCTUBRE\n• Carrera principal: 17:00.\n\nLos horarios se convierten a partir del cronograma local publicado por Fórmula 1 para Austin. Pueden modificarse; revisá el calendario oficial antes del evento.",
+      "fuentes": [
+        {
+          "texto": "Cronograma oficial del GP",
+          "url": "https://www.formula1.com/en/latest/article/formula-1-msc-cruises-united-states-grand-prix-2026.2u6li2pzNhPzL3TSYaagrm"
+        },
+        {
+          "texto": "Horarios y circuito",
+          "url": "https://www.formula1.com/en/racing/2026/united-states"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Consultar la próxima carrera",
+          "siguiente": "proxima_carrera"
+        },
+        {
+          "texto": "Ver el calendario restante",
+          "siguiente": "calendario"
+        },
+        {
+          "texto": "Ver resultados recientes",
+          "siguiente": "ultimo_resultado"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "calendario",
+      "titulo": "Calendario restante",
+      "texto": "📅 CALENDARIO RESTANTE DE 2026\n\nEstas son las próximas fechas previstas en el calendario:\n\n• Estados Unidos, Austin: 23–25 de octubre.\n• México: 30 de octubre–1 de noviembre.\n• São Paulo, Brasil: 6–8 de noviembre.\n• Las Vegas: 19–21 de noviembre.\n• Qatar: 27–29 de noviembre.\n• Abu Dhabi: 4–6 de diciembre.\n\nLas fechas corresponden al calendario publicado para la temporada 2026. No se actualizan automáticamente si hubiera cambios.",
+      "fuentes": [
+        {
+          "texto": "Calendario oficial de F1",
+          "url": "https://www.formula1.com/en/racing/2026"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Consultar la próxima carrera",
+          "siguiente": "proxima_carrera"
+        },
+        {
+          "texto": "Consultar horarios",
+          "siguiente": "horarios_carreras"
+        },
+        {
+          "texto": "Ver resultados recientes",
+          "siguiente": "ultimo_resultado"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "resultados_clasificacion",
+      "titulo": "Resultados y clasificación",
+      "texto": "📊 RESULTADOS Y CAMPEONATO 2026\n\nDespués del Gran Premio de Singapur del 11 de octubre, los primeros puestos del campeonato de pilotos son:\n\n1. Kimi Antonelli — 340 puntos.\n2. George Russell — 238 puntos.\n3. Lewis Hamilton — 229 puntos.\n4. Max Verstappen — 221 puntos.\n5. Charles Leclerc — 215 puntos.\n6. Lando Norris — 201 puntos.\n\nEn el campeonato de constructores, Mercedes encabeza la tabla con 578 puntos, seguida por Ferrari con 444 y McLaren con 339.\n\nLas posiciones son una fotografía de la temporada revisada el 16 de octubre de 2026, no una clasificación en vivo.",
+      "fuentes": [
+        {
+          "texto": "Clasificación oficial de pilotos",
+          "url": "https://www.formula1.com/en/results/2026/drivers"
+        },
+        {
+          "texto": "Clasificación oficial de constructores",
+          "url": "https://www.formula1.com/en/results/2026/team"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Ver clasificación de pilotos",
+          "siguiente": "clasificacion_pilotos"
+        },
+        {
+          "texto": "Ver clasificación de constructores",
+          "siguiente": "clasificacion_constructores"
+        },
+        {
+          "texto": "Ver el último resultado",
+          "siguiente": "ultimo_resultado"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "clasificacion_pilotos",
+      "titulo": "Clasificación de pilotos",
+      "texto": "🏆 CAMPEONATO DE PILOTOS 2026\n\nTabla publicada tras el GP de Singapur:\n\n1. Kimi Antonelli — 340 puntos.\n2. George Russell — 238.\n3. Lewis Hamilton — 229.\n4. Max Verstappen — 221.\n5. Charles Leclerc — 215.\n6. Lando Norris — 201.\n7. Oscar Piastri — 138.\n8. Isack Hadjar — 97.\n9. Liam Lawson — 75.\n10. Pierre Gasly — 41.\n11. Arvid Lindblad — 38.\n12. Franco Colapinto — 27.\n13. Oliver Bearman — 23.\n\nLa tabla puede cambiar en los siguientes Grandes Premios. Los puntos están sujetos a las decisiones oficiales de carrera.",
+      "fuentes": [
+        {
+          "texto": "Tabla oficial de pilotos",
+          "url": "https://www.formula1.com/en/results/2026/drivers"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Ver clasificación de constructores",
+          "siguiente": "clasificacion_constructores"
+        },
+        {
+          "texto": "Ver último resultado",
+          "siguiente": "ultimo_resultado"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "clasificacion_constructores",
+      "titulo": "Clasificación de constructores",
+      "texto": "🏎️ CAMPEONATO DE CONSTRUCTORES 2026\n\nPosiciones publicadas después del GP de Singapur:\n\n1. Mercedes — 578 puntos.\n2. Ferrari — 444 puntos.\n3. McLaren — 339 puntos.\n4. Red Bull Racing — 332 puntos.\n5. Racing Bulls — 100 puntos.\n6. Alpine — 68 puntos.\n7. Haas — 30 puntos.\n8. Audi — 23 puntos.\n9. Williams — 12 puntos.\n10. Aston Martin — 7 puntos.\n11. Cadillac — 0 puntos.\n\nLos equipos suman los puntos obtenidos por sus dos pilotos en cada sesión puntuable, según el reglamento vigente.",
+      "fuentes": [
+        {
+          "texto": "Tabla oficial de constructores",
+          "url": "https://www.formula1.com/en/results/2026/team"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Ver clasificación de pilotos",
+          "siguiente": "clasificacion_pilotos"
+        },
+        {
+          "texto": "Ver último resultado",
+          "siguiente": "ultimo_resultado"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "ultimo_resultado",
+      "titulo": "Último resultado",
+      "texto": "🏁 GRAN PREMIO DE SINGAPUR 2026\n\nLa carrera del 11 de octubre en Marina Bay terminó con este podio:\n\n🥇 1.º Max Verstappen — Red Bull Racing.\n🥈 2.º Charles Leclerc — Ferrari.\n🥉 3.º Kimi Antonelli — Mercedes.\n\nLos tres primeros completaron las 62 vueltas. Verstappen ganó por delante de Leclerc, con Antonelli en el tercer puesto.\n\nEste es el resultado de Singapur, la última carrera disputada al 16 de octubre de 2026.",
+      "fuentes": [
+        {
+          "texto": "Resultado oficial del GP de Singapur",
+          "url": "https://www.formula1.com/en/results/2026/races/1296/singapore/race-result"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Ver clasificación de pilotos",
+          "siguiente": "clasificacion_pilotos"
+        },
+        {
+          "texto": "Consultar la próxima carrera",
+          "siguiente": "proxima_carrera"
+        },
+        {
+          "texto": "Ver los horarios",
+          "siguiente": "horarios_carreras"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "traspasos_pilotos",
+      "titulo": "Traspasos de pilotos",
+      "texto": "🔄 FICHAJES Y CAMBIOS DE PILOTOS\n\nUno de los movimientos confirmados para 2027 es el de Rafael Câmara: Haas anunció el 15 de octubre de 2026 que el brasileño se incorporará al equipo con un contrato multianual.\n\nCâmara, integrante de la academia de pilotos de Ferrari y líder de Fórmula 2 en ese momento, ocupará el lugar que dejará Esteban Ocon al final de 2026.\n\nPor otro lado, Racing Bulls todavía no había definido su alineación de pilotos para 2027 al 11 de octubre.\n\nImportante: distinguí los anuncios oficiales de los rumores del mercado. Esta versión no recibe noticias en vivo ni confirma rumores nuevos.",
+      "fuentes": [
+        {
+          "texto": "Anuncio oficial sobre Rafael Câmara",
+          "url": "https://www.formula1.com/en/latest/article/ferrari-junior-rafael-camara-promoted-to-f1-with-haas-for-2027.1RSxvnFaLu8Hd3JD2ppFsz"
+        },
+        {
+          "texto": "Actualización de Racing Bulls",
+          "url": "https://www.formula1.com/en/latest/article/permane-states-racing-bulls-will-select-their-2027-driver-line-up-in-the-coming-weeks.39Cso2HINAEU5KViOulOZb"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Ver clasificación actual",
+          "siguiente": "clasificacion_pilotos"
+        },
+        {
+          "texto": "Conocer las escuderías y sus pilotos",
+          "siguiente": "escuderias_pilotos"
+        },
+        {
+          "texto": "Consultar la próxima carrera",
+          "siguiente": "proxima_carrera"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "escuderias_pilotos",
+      "titulo": "Escuderías y pilotos",
+      "texto": "🏎️ ESCUDERÍAS DE FÓRMULA 1 EN 2026\n\nEsta es la alineación que figura en la tabla de pilotos de la temporada:\n\n• Mercedes: Kimi Antonelli y George Russell.\n• Ferrari: Lewis Hamilton y Charles Leclerc.\n• Red Bull Racing: Max Verstappen e Isack Hadjar.\n• McLaren: Lando Norris y Oscar Piastri.\n• Williams: Carlos Sainz y Alexander Albon.\n• Haas: Esteban Ocon y Oliver Bearman.\n• Audi: Nico Hülkenberg y Gabriel Bortoleto.\n• Cadillac: Valtteri Bottas y Sergio Pérez.\n• Alpine: Pierre Gasly y Franco Colapinto.\n• Aston Martin: Fernando Alonso y Lance Stroll.\n• Racing Bulls: Liam Lawson y Arvid Lindblad.\n\nLas alineaciones pueden cambiar por anuncios de los equipos. Esta lista corresponde a la temporada 2026 y no es la parrilla confirmada de 2027.",
+      "fuentes": [
+        {
+          "texto": "Resultados oficiales de pilotos",
+          "url": "https://www.formula1.com/en/results/2026/drivers"
+        },
+        {
+          "texto": "Resultados oficiales de equipos",
+          "url": "https://www.formula1.com/en/results/2026/team"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Consultar traspasos",
+          "siguiente": "traspasos_pilotos"
+        },
+        {
+          "texto": "Ver la clasificación",
+          "siguiente": "resultados_clasificacion"
+        },
+        {
+          "texto": "Conocer datos curiosos",
+          "siguiente": "datos_curiosos"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "datos_curiosos",
+      "titulo": "Datos curiosos",
+      "texto": "💡 DATOS CURIOSOS DE LA F1\n\n• Juan Manuel Fangio ganó cinco campeonatos mundiales de pilotos y es una de las máximas figuras deportivas argentinas.\n\n• Michael Schumacher y Lewis Hamilton consiguieron siete títulos mundiales cada uno.\n\n• Los fines de semana sprint tienen una carrera corta adicional, además de la carrera principal, y no se disputan en todas las rondas.\n\n• Las paradas en boxes requieren coordinación entre mecánicos, estrategia de neumáticos y una ejecución muy rápida.\n\n• Las escuderías compiten no solo por el campeonato de pilotos, sino también por el campeonato mundial de constructores.",
+      "opciones": [
+        {
+          "texto": "Conocer las reglas de la F1",
+          "siguiente": "reglas_f1"
+        },
+        {
+          "texto": "Ver escuderías y pilotos",
+          "siguiente": "escuderias_pilotos"
+        },
+        {
+          "texto": "Volver a la historia de la F1",
+          "siguiente": "historia"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "reglas_f1",
+      "titulo": "Reglas de la F1",
+      "texto": "📘 REGLAS BÁSICAS DE LA F1\n\n• Clasificación: determina el orden de salida de la carrera principal.\n\n• Puntos: en una carrera principal convencional, los diez primeros reciben 25, 18, 15, 12, 10, 8, 6, 4, 2 y 1 punto, respectivamente.\n\n• Banderas: la amarilla advierte de un peligro, la roja detiene la sesión y la bandera a cuadros indica su final.\n\n• Pit stop: los equipos pueden cambiar neumáticos y hacer ajustes durante una parada en boxes.\n\n• Sprint: en las carreras sprint, los ocho primeros reciben puntos del 8 al 1, según el reglamento vigente.\n\nEstas son reglas generales; el reglamento deportivo y técnico oficial contiene condiciones adicionales.",
+      "fuentes": [
+        {
+          "texto": "Sitio oficial de Fórmula 1",
+          "url": "https://www.formula1.com/"
+        }
+      ],
+      "opciones": [
+        {
+          "texto": "Conocer datos curiosos",
+          "siguiente": "datos_curiosos"
+        },
+        {
+          "texto": "Ver resultados y clasificación",
+          "siguiente": "resultados_clasificacion"
+        },
+        {
+          "texto": "Volver al menú principal",
+          "siguiente": "menu_principal"
+        },
+        {
+          "texto": "Terminar conversación",
+          "siguiente": "terminar"
+        }
+      ]
+    },
+    {
+      "id": "terminar",
+      "titulo": "Conversación finalizada",
+      "texto": "¡Gracias por pasar por Ben Sulayem! 🏁 La conversación terminó. Cuando quieras volver a descubrir la Fórmula 1, podés comenzar una nueva sesión desde el botón correspondiente.",
+      "opciones": [
+        {
+          "texto": "Volver a empezar",
+          "siguiente": "inicio"
+        }
+      ]
+    }
+  ]
+}

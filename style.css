@@ -1,330 +1,791 @@
+/* ==========================================
+   1. VARIABLES Y CONFIGURACIÓN GENERAL
+========================================== */
+
+:root {
+    --fondo: #101116;
+    --panel: #15171e;
+    --panel-claro: #1b1e27;
+    --superficie: #1c202a;
+    --rojo: #e10600;
+    --rojo-hover: #ff211b;
+    --texto: #f5f6fa;
+    --texto-secundario: #a0a6b5;
+    --borde: #303441;
+    --verde: #50d69a;
+    --radio: 12px;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+html,
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f4f4;
-    color: #171717;
-}
-
-
-/* CONTENEDOR PRINCIPAL */
-
-.contenedor {
-    width: 95%;
-    max-width: 1400px;
-    min-height: 700px;
-
-    margin: 30px auto;
-
-    background-color: white;
-
-    border: 2px solid #222;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-
-/* =================================
-   TÍTULOS
-================================= */
-
-h1 {
-    font-size: 25px;
-
-    margin-bottom: 25px;
-
-    padding-bottom: 12px;
-
-    border-bottom: 2px solid #222;
-}
-
-h2 {
-    font-size: 18px;
-
-    margin-bottom: 25px;
-}
-
-
-/* =================================
-   SECCIÓN CONVERSOR
-================================= */
-
-.conversor {
-    padding: 30px;
-
-    border-right: 2px solid #222;
-}
-
-
-/* CAJAS */
-
-.caja-conversor {
-    border: 1px solid #999;
-
-    border-radius: 10px;
-
-    padding: 25px;
-
-    margin-bottom: 25px;
-}
-
-
-/* FILAS */
-
-.fila {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-bottom: 25px;
-}
-
-.fila:last-child {
-    margin-bottom: 0;
-}
-
-
-/* CAMPOS */
-
-.campo {
-    width: 42%;
-}
-
-.campo label {
-    display: block;
-
-    margin-bottom: 8px;
-
-    font-weight: bold;
-
-    font-size: 15px;
-}
-
-.campo input {
     width: 100%;
-
-    padding: 12px;
-
-    border: 1px solid #555;
-
-    border-radius: 6px;
-
-    font-size: 16px;
-
-    background-color: white;
+    min-height: 100%;
 }
 
-.campo input:focus {
-    outline: 2px solid #222;
+body {
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
-.campo input[readonly] {
-    background-color: #eeeeee;
-
-    color: #222;
+button {
+    font: inherit;
 }
 
-
-/* FLECHA */
-
-.flecha {
-    font-size: 30px;
-
-    color: #111;
+button:focus-visible {
+    outline: 3px solid #ff6964;
+    outline-offset: 3px;
 }
 
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
 
-/* TASAS */
+.oculto {
+    display: none !important;
+}
 
-.tasas {
-    border-top: 1px solid #aaa;
+/* ==========================================
+   2. DISTRIBUCIÓN GENERAL
+   Izquierda: 25%
+   Derecha: 75%
+========================================== */
 
-    padding-top: 15px;
+.app {
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) minmax(0, 3fr);
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
 
+/* ==========================================
+   3. HISTORIAL - PANEL IZQUIERDO
+========================================== */
+
+.historial {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 25px 20px 18px;
+    background: #12141a;
+    border-right: 1px solid #292c35;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 27px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.marca__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: var(--rojo);
+    color: white;
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    box-shadow: 0 5px 20px #e1060030;
+}
+
+.marca h1 {
     font-size: 15px;
+    font-weight: 850;
+    letter-spacing: 0.8px;
+}
 
+.marca p {
+    margin-top: 5px;
+    color: var(--texto-secundario);
+    font-size: 10px;
+    letter-spacing: 1.2px;
+}
+
+.historial__titulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 28px;
+}
+
+.historial__titulo h2 {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.etiqueta {
+    padding: 6px 8px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    color: var(--texto-secundario);
+    font-size: 9px;
+    letter-spacing: 0.7px;
+}
+
+.historial__descripcion {
+    margin-top: 12px;
+    margin-bottom: 19px;
+    color: var(--texto-secundario);
+    font-size: 12px;
     line-height: 1.7;
 }
 
-.tasas small {
-    color: #555;
-}
-
-
-/* =================================
-   SECCIÓN PIZARRÓN
-================================= */
-
-.pizarron {
-    padding: 30px;
-
+.historial__lista {
     display: flex;
-
     flex-direction: column;
+    gap: 8px;
+    max-height: calc(100dvh - 350px);
+    overflow-y: auto;
+    list-style: none;
 }
 
-
-/* TABLERO */
-
-.tablero {
-    border: 2px solid #333;
-
-    border-radius: 12px;
-
-    min-height: 470px;
-
-    padding: 25px;
-
-    background-color: #fafafa;
-
-    flex: 1;
+.historial__vacio {
+    padding: 14px 12px;
+    border: 1px dashed #373b48;
+    border-radius: 10px;
+    color: var(--texto-secundario);
+    font-size: 12px;
+    line-height: 1.6;
 }
 
-
-/* TÍTULO DEL TABLERO */
-
-.tablero h2 {
-    display: inline-block;
-
-    border-bottom: 2px solid #222;
-
-    padding-bottom: 8px;
+.historial__elemento {
+    min-width: 0;
 }
 
-
-/* NOTAS */
-
-.nota {
-    position: relative;
-
-    background-color: white;
-
-    border: 1px solid #aaa;
-
-    border-radius: 7px;
-
-    padding: 15px 45px 15px 15px;
-
-    margin-bottom: 15px;
-
-    min-height: 50px;
-
-    font-size: 16px;
-
+.historial__boton {
     display: flex;
-
     align-items: center;
-}
-
-
-/* BOTÓN ELIMINAR */
-
-.nota button {
-    position: absolute;
-
-    right: 10px;
-
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    border: none;
-
+    gap: 10px;
+    width: 100%;
+    min-height: 47px;
+    padding: 11px;
+    border: 1px solid transparent;
+    border-radius: 9px;
     background: transparent;
-
-    font-size: 22px;
-
-    cursor: pointer;
-
-    color: #111;
+    color: #c5c9d4;
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.5;
+    transition: 0.2s ease;
 }
 
-.nota button:hover {
-    font-weight: bold;
-
-    transform: translateY(-50%) scale(1.2);
+.historial__icono {
+    flex-shrink: 0;
+    color: var(--rojo);
+    font-size: 17px;
 }
 
+.historial__texto {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-/* =================================
-   BOTÓN AGREGAR NOTA
-================================= */
+.historial__boton:hover {
+    border-color: #353945;
+    background: #20232c;
+    color: white;
+}
 
-.boton-agregar {
-    margin: 25px auto 0;
+.historial__boton--activo {
+    border-color: #592b30;
+    background: #351a20;
+    color: white;
+}
 
-    padding: 14px 25px;
+.historial__inferior {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--borde);
+}
 
-    border: 2px solid #222;
+.estado {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #c8cbd4;
+    font-size: 11px;
+}
 
-    background-color: white;
+.estado__punto {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--verde);
+}
 
-    border-radius: 8px;
+.boton-nueva {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 45px;
+    padding: 10px;
+    border: 1px solid #454a58;
+    border-radius: 10px;
+    background: transparent;
+    color: white;
+    font-size: 12px;
+    font-weight: 650;
+    transition: 0.2s ease;
+}
 
+.boton-nueva span {
+    color: var(--rojo);
+    font-size: 21px;
+}
+
+.boton-nueva:hover:not(:disabled) {
+    border-color: var(--rojo);
+    background: #21191d;
+}
+
+.historial__pie {
+    color: #797f8d;
+    font-size: 10px;
+    text-align: center;
+}
+
+/* ==========================================
+   4. CHATBOX - PANEL DERECHO
+========================================== */
+
+.chatbox {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: 100vh;
+    height: 100dvh;
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            #a30a100b,
+            transparent 32%
+        ),
+        var(--fondo);
+}
+
+.chatbox__cabecera {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 88px;
+    padding: 18px 30px;
+    border-bottom: 1px solid #292c35;
+    background: #13151b;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+    border: 1px solid #4a4f5e;
+    border-radius: 50%;
+    background: #242833;
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.avatar--bot {
+    border-color: #6c252b;
+    background: linear-gradient(145deg, #e10600, #85120f);
+}
+
+.chatbox__identidad h2 {
     font-size: 15px;
+    font-weight: 750;
+}
 
-    font-weight: bold;
+.chatbox__identidad p {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 6px;
+    color: var(--texto-secundario);
+    font-size: 11px;
+}
 
+.chatbox__memoria {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    max-width: 220px;
+    margin-left: auto;
+    padding: 10px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 9px;
+    background: #191b23;
+}
+
+.chatbox__memoria span {
+    color: #969bab;
+    font-size: 9px;
+    letter-spacing: 0.7px;
+}
+
+.chatbox__memoria strong {
+    overflow: hidden;
+    color: #f4a3a0;
+    font-size: 11px;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ==========================================
+   5. MENSAJES DE LA CONVERSACIÓN
+========================================== */
+
+.mensajes {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 22px;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 30px 7%;
+    scroll-behavior: smooth;
+}
+
+.mensaje-carga {
+    padding: 16px;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    color: var(--texto-secundario);
+    font-size: 13px;
+}
+
+.mensaje {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    width: fit-content;
+    max-width: min(760px, 90%);
+    animation: aparecer 0.2s ease-out;
+}
+
+.mensaje--usuario {
+    align-self: flex-end;
+}
+
+.mensaje__autor {
+    margin: 0 0 8px 3px;
+    color: var(--texto-secundario);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.mensaje--usuario .mensaje__autor {
+    text-align: right;
+}
+
+.mensaje__texto {
+    padding: 16px 19px;
+    border: 1px solid #303441;
+    border-radius: 4px 14px 14px 14px;
+    background: var(--superficie);
+    color: #eef0f6;
+    font-size: 13px;
+    line-height: 1.9;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.mensaje--usuario .mensaje__texto {
+    border-color: #6c282a;
+    border-radius: 14px 4px 14px 14px;
+    background: #3a191e;
+    color: #fff0ef;
+}
+
+.mensaje__fuentes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.mensaje__fuente {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 9px;
+    border: 1px solid #373b49;
+    border-radius: 7px;
+    color: #bfc8dc;
+    font-size: 10px;
+    text-decoration: none;
+}
+
+.mensaje__fuente::before {
+    content: "↗";
+    color: #ff4943;
+    font-size: 13px;
+}
+
+.mensaje__fuente:hover {
+    border-color: var(--rojo);
+    color: white;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   6. OPCIONES INTERACTIVAS
+========================================== */
+
+.chatbox__interaccion {
+    flex-shrink: 0;
+    padding: 19px 7% 12px;
+    border-top: 1px solid #292c35;
+    background: #14161d;
+}
+
+.interaccion__titulo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 14px;
+}
+
+.interaccion__titulo p {
+    color: #aeb3c0;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.interaccion__linea {
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--rojo);
+}
+
+.opciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    max-height: 30vh;
+    overflow-y: auto;
+    padding: 2px;
+}
+
+.opcion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid #3b4050;
+    border-radius: 9px;
+    background: #1a1d26;
+    color: #edf0f6;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
     cursor: pointer;
-
-    transition: 0.2s;
+    transition: 0.2s ease;
 }
 
-.boton-agregar:hover {
-    background-color: #eeeeee;
-
-    transform: translateY(-2px);
+.opcion__texto {
+    overflow-wrap: anywhere;
 }
 
-.boton-agregar span {
-    font-size: 22px;
-
-    vertical-align: middle;
+.opcion__flecha {
+    flex-shrink: 0;
+    color: #ff514b;
+    font-size: 17px;
+    transition: transform 0.2s ease;
 }
 
+.opcion:hover {
+    border-color: var(--rojo);
+    background: #2b1c22;
+}
 
-/* =================================
-   RESPONSIVE
-================================= */
+.opcion:hover .opcion__flecha {
+    transform: translateX(3px);
+}
 
-@media (max-width: 850px) {
+.opcion--principal {
+    border-color: #7b262b;
+}
 
-    .contenedor {
-        grid-template-columns: 1fr;
+.opcion--terminar {
+    border-color: #65363a;
+}
+
+.boton-reintentar {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 12px;
+    border: 1px solid var(--rojo);
+    border-radius: 9px;
+    background: #361a1d;
+    color: white;
+    cursor: pointer;
+}
+
+/* ==========================================
+   7. PIE DEL CHATBOX
+========================================== */
+
+.chatbox__pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #292c35;
+    color: #858b9a;
+    font-size: 9px;
+}
+
+.chatbox__pie span:first-child {
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* ==========================================
+   8. RESPONSIVE: TABLETS
+========================================== */
+
+@media (max-width: 950px) {
+    .app {
+        grid-template-columns: minmax(220px, 1fr) minmax(0, 2.7fr);
     }
 
-    .conversor {
-        border-right: none;
-
-        border-bottom: 2px solid #222;
+    .historial {
+        padding-right: 14px;
+        padding-left: 14px;
     }
 
-    .fila {
-        flex-direction: column;
-
-        align-items: stretch;
+    .chatbox__cabecera {
+        padding-right: 19px;
+        padding-left: 19px;
     }
 
-    .campo {
-        width: 100%;
+    .mensajes,
+    .chatbox__interaccion {
+        padding-right: 5%;
+        padding-left: 5%;
+    }
+}
+
+/* ==========================================
+   9. RESPONSIVE: CELULARES
+========================================== */
+
+@media (max-width: 650px) {
+    .app {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+        min-height: 100dvh;
     }
 
-    .flecha {
-        text-align: center;
-
-        transform: rotate(90deg);
+    .historial {
+        min-height: 0;
+        padding: 12px 14px 10px;
+        border-right: 0;
+        border-bottom: 1px solid #303441;
     }
 
-    .tablero {
-        min-height: 400px;
+    .marca {
+        gap: 9px;
+        padding-bottom: 12px;
+    }
+
+    .marca__logo {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .marca h1 {
+        font-size: 13px;
+    }
+
+    .marca p {
+        margin-top: 3px;
+        font-size: 9px;
+    }
+
+    .historial__titulo {
+        margin-top: 10px;
+    }
+
+    .historial__titulo h2 {
+        font-size: 13px;
+    }
+
+    .historial__descripcion {
+        display: none;
+    }
+
+    .historial__lista {
+        flex-direction: row;
+        gap: 7px;
+        max-height: none;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 8px 0 3px;
+    }
+
+    .historial__elemento {
+        flex: 0 0 auto;
+        max-width: 220px;
+    }
+
+    .historial__vacio {
+        padding: 8px 10px;
+        font-size: 10px;
+    }
+
+    .historial__boton {
+        width: auto;
+        min-height: 35px;
+        padding: 7px 9px;
+        border-color: #333744;
+        background: #1b1e27;
+        font-size: 11px;
+    }
+
+    .historial__inferior {
+        display: none;
+    }
+
+    .chatbox {
+        min-height: 0;
+        height: auto;
+    }
+
+    .chatbox__cabecera {
+        min-height: 68px;
+        gap: 9px;
+        padding: 12px 14px;
+    }
+
+    .avatar {
+        width: 38px;
+        height: 38px;
+        font-size: 12px;
+    }
+
+    .chatbox__identidad h2 {
+        font-size: 13px;
+    }
+
+    .chatbox__identidad p {
+        max-width: 170px;
+        font-size: 10px;
+    }
+
+    .chatbox__memoria {
+        max-width: 125px;
+        padding: 8px;
+    }
+
+    .chatbox__memoria span {
+        font-size: 8px;
+    }
+
+    .chatbox__memoria strong {
+        font-size: 10px;
+    }
+
+    .mensajes {
+        flex: 1;
+        min-height: 260px;
+        gap: 17px;
+        padding: 18px 14px;
+    }
+
+    .mensaje {
+        max-width: 96%;
+    }
+
+    .mensaje__texto {
+        padding: 13px;
+        font-size: 12px;
+        line-height: 1.8;
+    }
+
+    .chatbox__interaccion {
+        padding: 15px 12px 10px;
+    }
+
+    .opciones {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 7px;
+        max-height: none;
+        overflow: visible;
+    }
+
+    .opcion {
+        min-height: 43px;
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .chatbox__pie {
+        flex-wrap: wrap;
+        margin-top: 12px;
+        font-size: 8px;
+    }
+}
+
+/* ==========================================
+   10. ACCESIBILIDAD
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

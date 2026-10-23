@@ -3,131 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#101116">
-    <title>Ben Sulayem | Asistente de F1</title>
+    <meta name="theme-color" content="#f4f8fc">
+    <title>Consultor médico</title>
     <link rel="stylesheet" href="style.css">
+    <script src="config.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 <body>
-
-    <div class="app">
-
-        <!-- IZQUIERDA: HISTORIAL (25%) -->
-        <aside id="historial" class="historial">
-
-            <div class="marca">
-                <div class="marca__logo">BS</div>
-                <div>
-                    <h1>BEN SULAYEM</h1>
-                    <p>ASISTENTE DE F1</p>
-                </div>
+    <main class="app">
+        <header class="page-header">
+            <div class="brand-icon" aria-hidden="true">+</div>
+            <div>
+                <h1>Consultor médico</h1>
+                <p>Tu asistente de información médica</p>
             </div>
-
-            <div class="historial__titulo">
-                <h2>Historial</h2>
-                <span class="etiqueta">CONSULTAS</span>
+            <div class="availability">
+                <span class="status-dot"></span>
+                Asistente virtual
             </div>
+        </header>
 
-            <p class="historial__descripcion">
-                Volvé a explorar los temas que consultaste.
-            </p>
+        <div class="workspace">
 
-            <nav aria-label="Historial de consultas">
-                <ul id="lista-historial" class="historial__lista">
-                    <li class="historial__vacio">
-                        Tus consultas aparecerán acá.
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="historial__inferior">
-                <div class="estado">
-                    <span class="estado__punto"></span>
-                    Asistente disponible
+            <!-- Parte: ingreso de datos -->
+            <section
+                id="ingreso-de-datos"
+                class="panel input-panel"
+                aria-label="ingreso de datos"
+            >
+                <div class="panel-heading">
+                    <div class="heading-icon" aria-hidden="true">✎</div>
+                    <div>
+                        <h2>Ingreso de datos</h2>
+                        <p>Escribí tu consulta con el detalle que consideres necesario.</p>
+                    </div>
                 </div>
 
-                <button
-                    type="button"
-                    id="nueva-conversacion"
-                    class="boton-nueva"
-                    disabled
-                >
-                    <span aria-hidden="true">↻</span>
-                    Nueva conversación
-                </button>
+                <form id="consultation-form">
+                    <label for="user-query">¿Qué necesitás consultar?</label>
 
-                <p class="historial__pie">
-                    Tu pasión por la F1, en un solo lugar.
-                </p>
-            </div>
+                    <textarea
+                        id="user-query"
+                        name="consulta"
+                        rows="5"
+                        maxlength="3000"
+                        placeholder="Escribí acá tu duda sobre trámites médicos, turnos, estudios, medicamentos u otro tema específico..."
+                        required
+                    ></textarea>
 
-        </aside>
+                    <div class="input-details">
+                        <span id="character-count">0 / 3000 caracteres</span>
+                        <span>Tu consulta se enviará al asistente.</span>
+                    </div>
 
-        <!-- DERECHA: CHATBOX (75%) -->
-        <main id="chatbox" class="chatbox">
+                    <div class="form-actions">
+                        <p id="form-feedback" role="status" aria-live="polite"></p>
+                        <button id="send-button" type="submit" disabled>
+                            <span id="send-label">Enviar consulta</span>
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
 
-            <header class="chatbox__cabecera">
-
-                <div class="avatar avatar--bot" aria-hidden="true">
-                    BS
+            <!-- Parte: chat -->
+            <section
+                id="chat"
+                class="panel chat-panel"
+                aria-label="chat"
+            >
+                <div class="panel-heading">
+                    <div class="heading-icon assistant-icon" aria-hidden="true">✦</div>
+                    <div>
+                        <h2>Chat</h2>
+                        <p>Respuesta de tu consultor médico virtual</p>
+                    </div>
                 </div>
 
-                <div class="chatbox__identidad">
-                    <h2>Ben Sulayem</h2>
+                <div class="conversation">
+                    <div class="avatar" aria-hidden="true">+</div>
+
+                    <div
+                        id="response-card"
+                        class="response-card state-idle"
+                        role="status"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
+                        <span id="response-kicker" class="response-kicker">
+                            CONSULTOR MÉDICO
+                        </span>
+                        <h3 id="response-title">¿En qué puedo ayudarte?</h3>
+                        <p id="response-text">
+                            Escribí tu consulta en el campo superior y presioná
+                            «Enviar consulta». La respuesta aparecerá en este espacio.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="medical-notice">
+                    <span aria-hidden="true">ⓘ</span>
                     <p>
-                        <span class="estado__punto"></span>
-                        Asistente informativo de Fórmula 1
+                        Este asistente brinda información general y no reemplaza
+                        la evaluación de un profesional de la salud. Ante una
+                        urgencia, contactá los servicios de emergencia de tu zona.
                     </p>
                 </div>
-
-                <div class="chatbox__memoria">
-                    <span>ELECCIÓN RECORDADA</span>
-                    <strong id="eleccion-recordada">
-                        Todavía no elegiste un tema
-                    </strong>
-                </div>
-
-            </header>
-
-            <section
-                id="mensajes"
-                class="mensajes"
-                aria-label="Conversación"
-                aria-live="polite"
-                aria-relevant="additions"
-            >
-                <p class="mensaje-carga">Cargando asistente...</p>
             </section>
 
-            <section class="chatbox__interaccion">
+        </div>
 
-                <div class="interaccion__titulo">
-                    <span class="interaccion__linea"></span>
-                    <p>Elegí una opción para continuar</p>
-                </div>
-
-                <div id="opciones" class="opciones">
-                    <!-- Botones creados desde arbol_decision.json -->
-                </div>
-
-                <button
-                    type="button"
-                    id="reintentar-carga"
-                    class="boton-reintentar oculto"
-                >
-                    Reintentar carga
-                </button>
-
-                <footer class="chatbox__pie">
-                    <span>BEN SULAYEM · F1</span>
-                    <span>Asistente independiente, no oficial</span>
-                </footer>
-
-            </section>
-
-        </main>
-
-    </div>
-
+        <footer class="page-footer">
+            Consultor médico · Asistente informativo
+        </footer>
+    </main>
 </body>
 </html>

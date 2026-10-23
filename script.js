@@ -1,375 +1,291 @@
 "use strict";
 
-/* ==========================================
-   ELEMENTOS DE LA INTERFAZ
-========================================== */
+/* =====================================
+   REFERENCIAS A LOS ELEMENTOS DEL DOM
+===================================== */
 
-const historial = document.getElementById("historial");
-const listaHistorial = document.getElementById("lista-historial");
+const form = document.getElementById("consultation-form");
+const textarea = document.getElementById("user-query");
+const sendButton = document.getElementById("send-button");
+const sendLabel = document.getElementById("send-label");
+const characterCount = document.getElementById("character-count");
+const formFeedback = document.getElementById("form-feedback");
 
-const mensajes = document.getElementById("mensajes");
-const opciones = document.getElementById("opciones");
-const chatbox = document.getElementById("chatbox");
+const responseCard = document.getElementById("response-card");
+const responseKicker = document.getElementById("response-kicker");
+const responseTitle = document.getElementById("response-title");
+const responseText = document.getElementById("response-text");
 
-const botonNueva = document.getElementById("nueva-conversacion");
-const botonReintentar = document.getElementById("reintentar-carga");
-const etiquetaEleccion = document.getElementById("eleccion-recordada");
+/* =====================================
+   CONFIGURACIÓN DEL ENVÍO
+===================================== */
 
-/* ==========================================
-   ESTADO DEL PROGRAMA
-   Los datos se conservan en memoria mientras
-   la página permanece abierta.
-========================================== */
+const MAX_LENGTH = 3000;
+const TIMEOUT_MS = 20000;
+const COOLDOWN_MS = 2500;
 
-let nodos = Object.create(null);
-let nodoActual = null;
-let eleccionRecordada = "";
-let consultasVisitadas = [];
+let isSending = false;
+let cooldownUntil = 0;
+let cooldownInterval = null;
 
-const MENSAJE_ERROR_CARGA =
-    "Abrí el proyecto con Live Server o un servidor local para que pueda leer arbol_decision.json";
+/* =====================================
+   ACTUALIZACIÓN DEL CONTADOR
+===================================== */
 
-botonNueva.disabled = true;
-botonNueva.addEventListener("click", reiniciarConversacion);
-botonReintentar.addEventListener("click", cargarArbol);
+textarea.addEventListener("input", () => {
+    characterCount.textContent =
+        `${textarea.value.length} / ${MAX_LENGTH} caracteres`;
 
-/* ==========================================
-   CARGAR Y VALIDAR EL ARCHIVO JSON
-========================================== */
+    updateSendButton();
+});
 
-async function cargarArbol() {
-    botonReintentar.classList.add("oculto");
-    opciones.replaceChildren();
+/* =====================================
+   ESTADOS DE LA RESPUESTA
+===================================== */
 
-    try {
-        const respuesta = await fetch("./arbol_decision.json");
+function setResponse(state, title, message) {
+    const icons = {
+        idle: "✦",
+        loading: "◌",
+        success: "✓",
+        error: "!"
+    };
 
-        if (!respuesta.ok) {
-            throw new Error("No se pudo leer el archivo JSON.");
-        }
+    responseCard.className = `response-card state-${state}`;
+    responseKicker.textContent = {
+        idle: "CONSULTOR MÉDICO",
+        loading: "PROCESANDO CONSULTA",
+        success: "RESPUESTA RECIBIDA",
+        error: "NO SE PUDO COMPLETAR"
+    }[state] || "CONSULTOR MÉDICO";
 
-        const datos = await respuesta.json();
+    responseTitle.textContent = title;
+    responseText.textContent = message;
 
-        if (!datos || !Array.isArray(datos.nodos)) {
-            throw new Error("El árbol no tiene la estructura esperada.");
-        }
-
-        const nuevosNodos = Object.create(null);
-
-        /* Primero registra todos los nodos. */
-        for (const nodo of datos.nodos) {
-            if (
-                !nodo ||
-                typeof nodo.id !== "string" ||
-                !nodo.id.trim() ||
-                typeof nodo.texto !== "string" ||
-                !Array.isArray(nodo.opciones) ||
-                nodo.opciones.length === 0 ||
-                nuevosNodos[nodo.id]
-            ) {
-                throw new Error("Hay un nodo inválido o sin opciones.");
-            }
-
-            nuevosNodos[nodo.id] = nodo;
-        }
-
-        /* Después verifica que los saltos existan. */
-        for (const nodo of datos.nodos) {
-            for (const opcion of nodo.opciones) {
-                if (
-                    !opcion ||
-                    typeof opcion.texto !== "string" ||
-                    !opcion.texto.trim() ||
-                    typeof opcion.siguiente !== "string" ||
-                    !nuevosNodos[opcion.siguiente]
-                ) {
-                    throw new Error("Hay una opción con destino inválido.");
-                }
-            }
-        }
-
-        if (!nuevosNodos.inicio || !nuevosNodos.menu_principal) {
-            throw new Error("Falta un nodo principal del árbol.");
-        }
-
-        nodos = nuevosNodos;
-        nodoActual = null;
-        eleccionRecordada = "";
-        consultasVisitadas = [];
-
-        actualizarEleccion();
-        renderizarHistorial();
-
-        botonNueva.disabled = false;
-
-        mensajes.replaceChildren();
-        mostrarNodo("inicio");
-
-    } catch (error) {
-        console.error("Error al cargar el árbol:", error);
-
-        mensajes.replaceChildren();
-        opciones.replaceChildren();
-
-        agregarMensaje("bot", MENSAJE_ERROR_CARGA);
-        botonReintentar.classList.remove("oculto");
+    const avatar = document.querySelector(".avatar");
+    if (avatar) {
+        avatar.textContent = icons[state] || "✦";
     }
 }
 
-/* ==========================================
-   AGREGAR MENSAJES
-========================================== */
+/* =====================================
+   MENSAJES DE ESTADO DEL FORMULARIO
+===================================== */
 
-function agregarMensaje(tipo, texto, fuentes = []) {
-    const articulo = document.createElement("article");
-    articulo.className = `mensaje mensaje--${tipo}`;
+function setFeedback(message, type = "") {
+    formFeedback.textContent = message;
+    formFeedback.className = type;
+}
 
-    const autor = document.createElement("span");
-    autor.className = "mensaje__autor";
-    autor.textContent = tipo === "usuario" ? "Vos" : "Ben Sulayem";
+/* =====================================
+   CONTROL DEL BOTÓN Y DEL TIEMPO DE ESPERA
+===================================== */
 
-    const contenido = document.createElement("p");
-    contenido.className = "mensaje__texto";
+function updateSendButton() {
+    const remaining = Math.max(0, cooldownUntil - Date.now());
 
-    /* textContent evita interpretar el contenido como HTML. */
-    contenido.textContent = personalizarTexto(texto);
+    textarea.disabled = isSending;
+    sendButton.disabled =
+        isSending ||
+        remaining > 0 ||
+        textarea.value.trim().length === 0;
 
-    articulo.append(autor, contenido);
+    if (isSending) {
+        sendLabel.textContent = "Enviando...";
+    } else if (remaining > 0) {
+        sendLabel.textContent =
+            `Esperá ${Math.ceil(remaining / 1000)} s`;
+    } else {
+        sendLabel.textContent = "Enviar consulta";
+    }
+}
 
-    /* Muestra fuentes oficiales definidas en el JSON. */
-    if (Array.isArray(fuentes) && fuentes.length > 0) {
-        const contenedorFuentes = document.createElement("div");
-        contenedorFuentes.className = "mensaje__fuentes";
+function startCooldown() {
+    cooldownUntil = Date.now() + COOLDOWN_MS;
 
-        fuentes.forEach((fuente) => {
-            if (
-                !fuente ||
-                typeof fuente.texto !== "string" ||
-                typeof fuente.url !== "string" ||
-                !fuente.url.startsWith("https://")
-            ) {
-                return;
-            }
-
-            const enlace = document.createElement("a");
-
-            enlace.className = "mensaje__fuente";
-            enlace.textContent = fuente.texto;
-            enlace.href = fuente.url;
-            enlace.target = "_blank";
-            enlace.rel = "noopener noreferrer";
-
-            contenedorFuentes.appendChild(enlace);
-        });
-
-        if (contenedorFuentes.children.length > 0) {
-            articulo.appendChild(contenedorFuentes);
-        }
+    if (cooldownInterval) {
+        clearInterval(cooldownInterval);
     }
 
-    mensajes.appendChild(articulo);
-    mensajes.scrollTop = mensajes.scrollHeight;
+    updateSendButton();
+
+    cooldownInterval = setInterval(() => {
+        updateSendButton();
+
+        if (Date.now() >= cooldownUntil) {
+            clearInterval(cooldownInterval);
+            cooldownInterval = null;
+            updateSendButton();
+        }
+    }, 200);
 }
 
-/* ==========================================
-   PERSONALIZAR LOS TEXTOS DEL JSON
-========================================== */
+/* =====================================
+   INTERPRETACIÓN DE LA RESPUESTA
+===================================== */
 
-function personalizarTexto(texto) {
-    const eleccion = eleccionRecordada || "ningún tema todavía";
+function extractResponse(data) {
+    if (typeof data === "string") {
+        return data.trim();
+    }
 
-    return texto.replace(/\{eleccion\}/g, eleccion);
+    if (data && typeof data === "object") {
+        const possibleKeys = [
+            "respuesta",
+            "response",
+            "answer",
+            "message",
+            "text"
+        ];
+
+        for (const key of possibleKeys) {
+            if (typeof data[key] === "string" && data[key].trim()) {
+                return data[key].trim();
+            }
+        }
+
+        /* Permite interpretar respuestas que contengan un objeto anidado. */
+        if (data.data && typeof data.data === "object") {
+            return extractResponse(data.data);
+        }
+
+        return JSON.stringify(data, null, 2);
+    }
+
+    return "";
 }
 
-/* ==========================================
-   MOSTRAR UN NODO DEL ÁRBOL
-========================================== */
+/* =====================================
+   ENVÍO ASÍNCRONO AL WEBHOOK
+===================================== */
 
-function mostrarNodo(id) {
-    const nodo = nodos[id];
-
-    if (!nodo) {
+async function sendConsultation(message) {
+    if (isSending || Date.now() < cooldownUntil) {
         return;
     }
 
-    nodoActual = id;
-
-    agregarMensaje("bot", nodo.texto, nodo.fuentes || []);
-
-    registrarConsulta(nodo);
-    renderizarHistorial();
-
-    /* Quita los controles de la respuesta anterior. */
-    opciones.replaceChildren();
-
-    /* Crea una opción clickeable por cada salto del JSON. */
-    nodo.opciones.forEach((opcion) => {
-        const boton = document.createElement("button");
-        const texto = document.createElement("span");
-        const flecha = document.createElement("span");
-
-        boton.type = "button";
-        boton.className = "opcion";
-
-        if (id === "menu_principal") {
-            boton.classList.add("opcion--principal");
-        }
-
-        if (opcion.siguiente === "terminar") {
-            boton.classList.add("opcion--terminar");
-        }
-
-        texto.className = "opcion__texto";
-        texto.textContent = opcion.texto;
-
-        flecha.className = "opcion__flecha";
-        flecha.textContent = "→";
-        flecha.setAttribute("aria-hidden", "true");
-
-        boton.append(texto, flecha);
-
-        boton.addEventListener("click", () => {
-            seleccionarOpcion(opcion);
-        });
-
-        opciones.appendChild(boton);
-    });
-
-    mensajes.scrollTop = mensajes.scrollHeight;
-}
-
-/* ==========================================
-   EJECUTAR UNA OPCIÓN SELECCIONADA
-========================================== */
-
-function seleccionarOpcion(opcion) {
-    /* Guarda la categoría principal elegida por la persona. */
-    if (typeof opcion.recuerda === "string" && opcion.recuerda.trim()) {
-        eleccionRecordada = opcion.recuerda;
-        actualizarEleccion();
-    }
-
-    /* Reinicia únicamente si la persona lo selecciona. */
-    if (opcion.siguiente === "inicio") {
-        reiniciarConversacion();
+    if (!message || message.length > MAX_LENGTH) {
+        setFeedback("Escribí una consulta de hasta 3000 caracteres.", "error");
         return;
     }
 
-    agregarMensaje("usuario", opcion.texto);
-
-    /* El destino siempre procede de arbol_decision.json. */
-    mostrarNodo(opcion.siguiente);
-}
-
-/* ==========================================
-   MEMORIA TEMPORAL DE LA ELECCIÓN
-========================================== */
-
-function actualizarEleccion() {
-    etiquetaEleccion.textContent =
-        eleccionRecordada || "Todavía no elegiste un tema";
-}
-
-/* ==========================================
-   HISTORIAL DE CONSULTAS
-========================================== */
-
-function registrarConsulta(nodo) {
-    const nodosGenerales = [
-        "inicio",
-        "menu_principal",
-        "terminar"
-    ];
-
-    if (nodosGenerales.includes(nodo.id)) {
-        return;
-    }
-
-    /* Evita duplicados; mantiene la consulta más reciente al final. */
-    consultasVisitadas = consultasVisitadas.filter(
-        (id) => id !== nodo.id
+    isSending = true;
+    updateSendButton();
+    setFeedback("");
+    setResponse(
+        "loading",
+        "Estamos procesando tu consulta",
+        "El asistente está esperando la respuesta. Esto puede tardar unos segundos."
     );
 
-    consultasVisitadas.push(nodo.id);
-}
+    const controller = new AbortController();
 
-function renderizarHistorial() {
-    listaHistorial.replaceChildren();
+    /* Cancela la petición si supera el tiempo máximo. */
+    const timeoutId = setTimeout(() => {
+        controller.abort();
+    }, TIMEOUT_MS);
 
-    if (consultasVisitadas.length === 0) {
-        const vacio = document.createElement("li");
-
-        vacio.className = "historial__vacio";
-        vacio.textContent = "Tus consultas aparecerán acá.";
-
-        listaHistorial.appendChild(vacio);
-        return;
-    }
-
-    /* Presenta primero la consulta visitada más recientemente. */
-    [...consultasVisitadas].reverse().forEach((id) => {
-        const nodo = nodos[id];
-
-        if (!nodo) {
-            return;
-        }
-
-        const elemento = document.createElement("li");
-        elemento.className = "historial__elemento";
-
-        const boton = document.createElement("button");
-        boton.type = "button";
-        boton.className = "historial__boton";
-
-        if (id === nodoActual) {
-            boton.classList.add("historial__boton--activo");
-            boton.setAttribute("aria-current", "page");
-        }
-
-        const icono = document.createElement("span");
-        icono.className = "historial__icono";
-        icono.textContent = "↗";
-        icono.setAttribute("aria-hidden", "true");
-
-        const texto = document.createElement("span");
-        texto.className = "historial__texto";
-        texto.textContent = nodo.titulo || id;
-
-        boton.append(icono, texto);
-
-        boton.addEventListener("click", () => {
-            mostrarNodo(id);
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json, text/plain"
+            },
+            body: JSON.stringify({
+                consulta: message,
+                message: message,
+                agente: "Consultor medico"
+            }),
+            signal: controller.signal
         });
 
-        elemento.appendChild(boton);
-        listaHistorial.appendChild(elemento);
-    });
+        if (!response.ok) {
+            throw new Error(`El servidor respondió con el estado ${response.status}.`);
+        }
+
+        const rawBody = await response.text();
+        let result;
+
+        /* El webhook puede devolver texto plano o JSON. */
+        try {
+            result = JSON.parse(rawBody);
+        } catch {
+            result = rawBody;
+        }
+
+        const answer = extractResponse(result);
+
+        if (!answer) {
+            throw new Error("El servidor respondió, pero no devolvió contenido.");
+        }
+
+        setResponse(
+            "success",
+            "Respuesta del consultor médico",
+            answer
+        );
+
+        setFeedback("Consulta procesada correctamente.", "success");
+
+    } catch (error) {
+        console.error("Error al procesar la consulta:", error);
+
+        if (error.name === "AbortError") {
+            setResponse(
+                "error",
+                "Se agotó el tiempo de espera",
+                "El servidor tardó demasiado en responder. Revisá tu conexión e intentá nuevamente."
+            );
+        } else {
+            setResponse(
+                "error",
+                "No pudimos obtener una respuesta",
+                "Verificá que el webhook esté configurado, que el servicio esté disponible y que permita recibir solicitudes desde esta página. Después podés volver a intentarlo."
+            );
+        }
+
+        setFeedback(
+            "No se pudo completar el envío. Revisá la configuración del servicio.",
+            "error"
+        );
+
+    } finally {
+        clearTimeout(timeoutId);
+
+        isSending = false;
+        startCooldown();
+    }
 }
 
-/* ==========================================
-   REINICIAR LA CONVERSACIÓN
-========================================== */
+/* =====================================
+   EVENTO DEL FORMULARIO
+===================================== */
 
-function reiniciarConversacion() {
-    if (!nodos.inicio) {
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const message = textarea.value.trim();
+
+    if (!message) {
+        setFeedback("Escribí tu consulta antes de enviarla.", "error");
+        textarea.focus();
         return;
     }
 
-    nodoActual = null;
-    eleccionRecordada = "";
-    consultasVisitadas = [];
+    await sendConsultation(message);
 
-    mensajes.replaceChildren();
-    opciones.replaceChildren();
+    /* Limpia el campo solo si el usuario ya recibió respuesta. */
+    if (responseCard.classList.contains("state-success")) {
+        textarea.value = "";
+        characterCount.textContent = `0 / ${MAX_LENGTH} caracteres`;
+    }
 
-    actualizarEleccion();
-    renderizarHistorial();
+    updateSendButton();
+});
 
-    mostrarNodo("inicio");
-}
+/* =====================================
+   INICIALIZACIÓN
+===================================== */
 
-/* ==========================================
-   ARRANQUE
-========================================== */
-
-cargarArbol();
+updateSendButton();
